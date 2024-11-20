@@ -1,4 +1,96 @@
-import axios from "axios";
+import { Client } from "client";
+
+class Auth {
+    client: Client;
+    constructor(client: Client) {
+        this.client = client;
+    }
+    async postKey(body: PfsenseAPI.auth.keyRequest): Promise<PfsenseAPI.auth.keyResponse> {
+        let response = await this.client.post(PfsenseAPI.auth.post.key, body, "basic");
+
+        return response.data;
+    }
+    async deleteKey(id: number): Promise<PfsenseAPI.auth.keyResponse> {
+        let url_endpoint = this.client.createFullUrl(PfsenseAPI.auth.del.key, { id });
+        let response = await this.client.delete(url_endpoint, "basic");
+
+        return response.data;
+    }
+    async keys(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.auth.keyResponse[]> {
+        let response = await this.client.get(PfsenseAPI.auth.get.keys, query);
+
+        return response.data;
+    }
+    async deleteKeys(query: PfsenseAPI.queryWithoutSortRequest): Promise<PfsenseAPI.auth.keyResponse[]> {
+        let response = await this.client.delete(PfsenseAPI.auth.del.keys, query);
+
+        return response.data;
+    }
+}
+
+class Diagnostics {
+    client: Client;
+    constructor(client: Client) {
+        this.client = client;
+    }
+
+    async arpTable(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.diagnostics.Arp.arpTableResponse[]> {
+        let response = await this.client.get(PfsenseAPI.diagnostics.Arp.get.arpTable, query);
+
+        return response.data;
+    }
+    async deleteArpTable(query: PfsenseAPI.queryWithoutSortRequest): Promise<PfsenseAPI.diagnostics.Arp.arpTableResponse[]> {
+        let response = await this.client.delete(PfsenseAPI.diagnostics.Arp.del.arpTable, query);
+
+        return response.data;
+    }
+    async getArpEntry(id: number): Promise<PfsenseAPI.diagnostics.Arp.arpTableResponse> {
+        let response = await this.client.get(PfsenseAPI.diagnostics.Arp.get.arpEntry, { id });
+
+        return response.data;
+    }
+    async deleteArpEntry(id: number): Promise<PfsenseAPI.diagnostics.Arp.arpTableResponse> {
+        let response = await this.client.delete(PfsenseAPI.diagnostics.Arp.del.arpEntry, { id });
+
+        return response.data;
+    }
+    async runCommand(command: string): Promise<PfsenseAPI.diagnostics.CommandResponse> {
+        let response = await this.client.post(PfsenseAPI.diagnostics.post.command, { command });
+
+        return { ...response.data, command };
+    }
+    async getConfigRevision(id: number): Promise<PfsenseAPI.diagnostics.config.ConfigHistoryRevision> {
+        let response = await this.client.get(PfsenseAPI.diagnostics.config.get.revision, { id });
+
+        return response.data;
+    }
+    async deleteConfigRevision(id: number): Promise<PfsenseAPI.diagnostics.config.ConfigHistoryRevision> {
+        let response = await this.client.delete(PfsenseAPI.diagnostics.config.del.revision, { id });
+
+        return response.data;
+    }
+    async getConfigRevisions(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.diagnostics.config.ConfigHistoryRevision[]> {
+        let response = await this.client.get(PfsenseAPI.diagnostics.config.get.revisions, query);
+
+        return response.data;
+    }
+    async deleteConfigRevisions(query: PfsenseAPI.queryWithoutSortRequest): Promise<PfsenseAPI.diagnostics.config.ConfigHistoryRevision[]> {
+        let response = await this.client.delete(PfsenseAPI.diagnostics.config.del.revisions, query);
+
+        return response.data;
+    }
+    async HaltSystem(body: PfsenseAPI.diagnostics.SystemHaltRequest): Promise<PfsenseAPI.diagnostics.SystemHaltResponse> {
+        let response = await this.client.post(PfsenseAPI.diagnostics.post.halt, body);
+
+        return response.data;
+    }
+
+    async RebootSystem(body: PfsenseAPI.diagnostics.SystemRebootRequest): Promise<PfsenseAPI.diagnostics.SystemRebootResponse> {
+        let response = await this.client.post(PfsenseAPI.diagnostics.post.reboot, body);
+
+        return response.data;
+    }
+}
 
 class Pfsense {
     version: string;
@@ -6,26 +98,64 @@ class Pfsense {
     host: string;
     key: string;
     full_endpoint: string;
+    client: any;
+    auth: Auth;
+    diagnostics: Diagnostics;
     constructor(host: string, api_key: string, { version } = { version: "v2" }) {
         this.version = version;
-        this.defaultEndpoint = "/api/" + this.version + "/";
+        this.defaultEndpoint = "/api/" + this.version;
         this.host = host;
         this.key = api_key;
         this.full_endpoint = this.host + this.defaultEndpoint;
-    }
-    private getUrl(endpoint: string) {
-        return this.full_endpoint + endpoint;
-    }
-    async init() {
-        axios.post(this.getUrl(PfsenseAPI.auth.post.key));
+        this.client = new Client({
+            base_url: this.full_endpoint,
+            api_key: this.key,
+        });
+        this.auth = new Auth(this.client);
+        this.diagnostics = new Diagnostics(this.client);
     }
 }
 
-namespace PfsenseAPI {
+export namespace PfsenseAPI {
+    export interface APIResponse {
+        code: number;
+        status: string;
+        response_id: string;
+        message: string;
+        data: any;
+        _links: any;
+    }
+    export interface APIResponseError extends APIResponse {
+        code: 400 | 401 | 403 | 404 | 406 | 409 | 415 | 422 | 424 | 500 | 503;
+    }
+
+    export interface queryRequest {
+        limit?: number;
+        offset?: number;
+        sort_by?: string[];
+        sort_order?: "SORT_ASC" | "SORT_DESC";
+        query?: Map<any, any>;
+    }
+    export interface queryWithoutSortRequest {
+        limit?: number;
+        offset?: number;
+        query?: Map<any, any>;
+    }
+
     export namespace auth {
         export enum get {
             keys = "/auth/keys",
             jwt = "/auth/jwt",
+        }
+        export interface keyRequest {
+            descr: string;
+            hash_algo: string;
+            length_bytes: number;
+            hash: string;
+            key: string;
+        }
+        export interface keyResponse extends keyRequest {
+            username: string;
         }
         export enum post {
             key = "/auth/key",
@@ -42,6 +172,18 @@ namespace PfsenseAPI {
                 arpTable = "/diagnostics/arp_table",
                 arpEntry = "/diagnostics/arp_table/entry",
             }
+
+            export interface arpTableResponse {
+                hostname: string;
+                ip_address: string;
+                mac_address: string;
+                interface: string;
+                type: string;
+                permanent: boolean;
+                dnsresolve: string;
+                expires: string;
+            }
+
             export enum del {
                 arpTable = "/diagnostics/arp_table",
                 arpEntry = "/diagnostics/arp_table/entry",
@@ -52,6 +194,14 @@ namespace PfsenseAPI {
                 revision = "/diagnostics/config_history/revision",
                 revisions = "/diagnostics/config_history/revisions",
             }
+            export interface ConfigHistoryRevision {
+                description: string;
+                time: string;
+                version: string;
+                filesize: number;
+                oneOf: any[];
+            }
+
             export enum del {
                 revision = "/diagnostics/config_history/revision",
                 revisions = "/diagnostics/config_history/revision",
@@ -61,6 +211,26 @@ namespace PfsenseAPI {
             command = "/diagnostics/command_prompt",
             halt = "/diagnostics/halt_system",
             reboot = "/diagnostics/reboot",
+        }
+
+        export interface CommandResponse {
+            output: string;
+            result_code: number;
+            command: string;
+        }
+        export interface SystemHaltRequest {
+            dry_run: boolean;
+        }
+        export interface SystemHaltResponse {
+            description: string;
+            oneOf: any[];
+        }
+        export interface SystemRebootRequest {
+            dry_run: boolean;
+        }
+        export interface SystemRebootResponse {
+            description: string;
+            oneOf: any[];
         }
     }
     export namespace firewall {
