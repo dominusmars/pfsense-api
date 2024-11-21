@@ -9,11 +9,11 @@ interface ClientOptions {
 }
 type AuthorizationTypes = "jwt" | "basic" | "api_key";
 export class Client {
-    base_url: string;
-    api_key: string | undefined;
-    user: string | undefined;
-    password: string | undefined;
-    jwt: string | undefined;
+    private base_url: string;
+    private api_key: string | undefined;
+    private user: string | undefined;
+    private password: string | undefined;
+    private jwt: string | undefined;
     constructor({ base_url, api_key, user, password }: ClientOptions) {
         this.api_key = api_key;
         this.user = user;
@@ -35,7 +35,7 @@ export class Client {
         }
     }
     private async getJwt() {
-        const response = await axios.get<PfsenseAPI.APIResponse>(this.base_url + PfsenseAPI.auth.get.jwt, {
+        const response = await axios.get<PfsenseAPI.APIResponse<any>>(this.base_url + PfsenseAPI.auth.get.jwt, {
             headers: this.getAuth(),
         });
         this.jwt = response.data.data.token;
@@ -89,52 +89,52 @@ export class Client {
         return endpoint + query_string;
     }
 
-    async get(endpoint: string, query?: any, auth?: AuthorizationTypes) {
+    async get<T>(endpoint: string, query?: any, auth?: AuthorizationTypes) {
         try {
-            const response = await axios.get<PfsenseAPI.APIResponse>(this.base_url + this.createFullUrl(endpoint, query), {
+            const response = await axios.get<PfsenseAPI.APIResponse<any>>(this.base_url + this.createFullUrl(endpoint, query), {
                 headers: this.getAuth(auth),
             });
-            return response.data;
+            return response.data as PfsenseAPI.APIResponse<T>;
         } catch (error) {
             return (error as AxiosError).response?.data as PfsenseAPI.APIResponseError;
         }
     }
-    async post(endpoint: string, body: any, auth?: AuthorizationTypes) {
+    async post<T>(endpoint: string, body: any, auth?: AuthorizationTypes) {
         try {
-            const response = await axios.post<PfsenseAPI.APIResponse>(this.base_url + endpoint, body, {
+            const response = await axios.post<PfsenseAPI.APIResponse<any>>(this.base_url + endpoint, body, {
                 headers: this.getAuth(auth),
             });
-            return response.data;
+            return response.data as PfsenseAPI.APIResponse<T>;
         } catch (error) {
             return (error as AxiosError).response?.data as PfsenseAPI.APIResponseError;
         }
     }
-    async put(endpoint: string, body: any, auth?: AuthorizationTypes) {
+    async put<T>(endpoint: string, body: any, auth?: AuthorizationTypes) {
         try {
-            const response = await axios.put<PfsenseAPI.APIResponse>(this.base_url + endpoint, body, {
+            const response = await axios.put<PfsenseAPI.APIResponse<any>>(this.base_url + endpoint, body, {
                 headers: this.getAuth(auth),
             });
-            return response.data;
+            return response.data as PfsenseAPI.APIResponse<T>;
         } catch (error) {
             return (error as AxiosError).response?.data as PfsenseAPI.APIResponseError;
         }
     }
-    async delete(endpoint: string, query?: any, auth?: AuthorizationTypes) {
+    async delete<T>(endpoint: string, query?: any, auth?: AuthorizationTypes) {
         try {
-            const response = await axios.delete<PfsenseAPI.APIResponse>(this.base_url + this.createFullUrl(endpoint, query), {
+            const response = await axios.delete<PfsenseAPI.APIResponse<any>>(this.base_url + this.createFullUrl(endpoint, query), {
                 headers: this.getAuth(auth),
             });
-            return response.data;
+            return response.data as PfsenseAPI.APIResponse<T>;
         } catch (error) {
             return (error as AxiosError).response?.data as PfsenseAPI.APIResponseError;
         }
     }
-    async patch(endpoint: string, body: any, auth?: AuthorizationTypes) {
+    async patch<T>(endpoint: string, body: any, auth?: AuthorizationTypes) {
         try {
-            const response = await axios.patch<PfsenseAPI.APIResponse>(this.base_url + endpoint, body, {
+            const response = await axios.patch<PfsenseAPI.APIResponse<any>>(this.base_url + endpoint, body, {
                 headers: this.getAuth(auth),
             });
-            return response.data;
+            return response.data as PfsenseAPI.APIResponse<T>;
         } catch (error) {
             return (error as AxiosError).response?.data as PfsenseAPI.APIResponseError;
         }

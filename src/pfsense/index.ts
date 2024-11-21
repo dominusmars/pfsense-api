@@ -1,30 +1,22 @@
 import { Client } from "client";
+type APIResponse<T> = PfsenseAPI.APIResponse<T>;
 
 class Auth {
     client: Client;
     constructor(client: Client) {
         this.client = client;
     }
-    async postKey(body: PfsenseAPI.auth.keyRequest): Promise<PfsenseAPI.auth.keyResponse> {
-        let response = await this.client.post(PfsenseAPI.auth.post.key, body, "basic");
-
-        return response.data;
+    async postKey(body: PfsenseAPI.auth.keyRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.auth.keyResponse>> {
+        return await this.client.post(PfsenseAPI.auth.post.key, body, "basic");
     }
-    async deleteKey(id: number): Promise<PfsenseAPI.auth.keyResponse> {
-        let url_endpoint = this.client.createFullUrl(PfsenseAPI.auth.del.key, { id });
-        let response = await this.client.delete(url_endpoint, "basic");
-
-        return response.data;
+    async deleteKey(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.auth.keyResponse>> {
+        return await this.client.delete(PfsenseAPI.auth.del.key, { id }, "basic");
     }
-    async keys(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.auth.keyResponse[]> {
-        let response = await this.client.get(PfsenseAPI.auth.get.keys, query);
-
-        return response.data;
+    async keys(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.auth.keyResponse[]>> {
+        return await this.client.get(PfsenseAPI.auth.get.keys, query);
     }
-    async deleteKeys(query: PfsenseAPI.queryWithoutSortRequest): Promise<PfsenseAPI.auth.keyResponse[]> {
-        let response = await this.client.delete(PfsenseAPI.auth.del.keys, query);
-
-        return response.data;
+    async deleteKeys(query: PfsenseAPI.queryWithoutSortRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.auth.keyResponse[]>> {
+        return await this.client.delete(PfsenseAPI.auth.del.keys, query);
     }
 }
 
@@ -34,61 +26,457 @@ class Diagnostics {
         this.client = client;
     }
 
-    async arpTable(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.diagnostics.Arp.arpTableResponse[]> {
-        let response = await this.client.get(PfsenseAPI.diagnostics.Arp.get.arpTable, query);
-
-        return response.data;
+    async arpTable(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.Arp.arpTableResponse[]>> {
+        return await this.client.get(PfsenseAPI.diagnostics.Arp.get.arpTable, query);
     }
-    async deleteArpTable(query: PfsenseAPI.queryWithoutSortRequest): Promise<PfsenseAPI.diagnostics.Arp.arpTableResponse[]> {
-        let response = await this.client.delete(PfsenseAPI.diagnostics.Arp.del.arpTable, query);
-
-        return response.data;
+    async deleteArpTable(query: PfsenseAPI.queryWithoutSortRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.Arp.arpTableResponse[]>> {
+        return await this.client.delete(PfsenseAPI.diagnostics.Arp.del.arpTable, query);
     }
-    async getArpEntry(id: number): Promise<PfsenseAPI.diagnostics.Arp.arpTableResponse> {
-        let response = await this.client.get(PfsenseAPI.diagnostics.Arp.get.arpEntry, { id });
-
-        return response.data;
+    async getArpEntry(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.Arp.arpTableResponse>> {
+        return await this.client.get(PfsenseAPI.diagnostics.Arp.get.arpEntry, { id });
     }
-    async deleteArpEntry(id: number): Promise<PfsenseAPI.diagnostics.Arp.arpTableResponse> {
-        let response = await this.client.delete(PfsenseAPI.diagnostics.Arp.del.arpEntry, { id });
-
-        return response.data;
+    async deleteArpEntry(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.Arp.arpTableResponse>> {
+        return await this.client.delete(PfsenseAPI.diagnostics.Arp.del.arpEntry, { id });
     }
-    async runCommand(command: string): Promise<PfsenseAPI.diagnostics.CommandResponse> {
-        let response = await this.client.post(PfsenseAPI.diagnostics.post.command, { command });
-
-        return { ...response.data, command };
+    async runCommand(command: string): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.CommandResponse>> {
+        return await this.client.post(PfsenseAPI.diagnostics.post.command, { command });
     }
-    async getConfigRevision(id: number): Promise<PfsenseAPI.diagnostics.config.ConfigHistoryRevision> {
-        let response = await this.client.get(PfsenseAPI.diagnostics.config.get.revision, { id });
-
-        return response.data;
+    async getConfigRevision(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.config.ConfigHistoryRevision>> {
+        return await this.client.get(PfsenseAPI.diagnostics.config.get.revision, { id });
     }
-    async deleteConfigRevision(id: number): Promise<PfsenseAPI.diagnostics.config.ConfigHistoryRevision> {
-        let response = await this.client.delete(PfsenseAPI.diagnostics.config.del.revision, { id });
-
-        return response.data;
+    async deleteConfigRevision(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.config.ConfigHistoryRevision>> {
+        return await this.client.delete(PfsenseAPI.diagnostics.config.del.revision, { id });
     }
-    async getConfigRevisions(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.diagnostics.config.ConfigHistoryRevision[]> {
-        let response = await this.client.get(PfsenseAPI.diagnostics.config.get.revisions, query);
-
-        return response.data;
+    async getConfigRevisions(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.config.ConfigHistoryRevision[]>> {
+        return await this.client.get(PfsenseAPI.diagnostics.config.get.revisions, query);
     }
-    async deleteConfigRevisions(query: PfsenseAPI.queryWithoutSortRequest): Promise<PfsenseAPI.diagnostics.config.ConfigHistoryRevision[]> {
-        let response = await this.client.delete(PfsenseAPI.diagnostics.config.del.revisions, query);
-
-        return response.data;
+    async deleteConfigRevisions(
+        query: PfsenseAPI.queryWithoutSortRequest
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.config.ConfigHistoryRevision[]>> {
+        return await this.client.delete(PfsenseAPI.diagnostics.config.del.revisions, query);
     }
-    async HaltSystem(body: PfsenseAPI.diagnostics.SystemHaltRequest): Promise<PfsenseAPI.diagnostics.SystemHaltResponse> {
-        let response = await this.client.post(PfsenseAPI.diagnostics.post.halt, body);
-
-        return response.data;
+    async HaltSystem(body: PfsenseAPI.diagnostics.SystemHaltRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.SystemHaltResponse>> {
+        return await this.client.post(PfsenseAPI.diagnostics.post.halt, body);
     }
 
-    async RebootSystem(body: PfsenseAPI.diagnostics.SystemRebootRequest): Promise<PfsenseAPI.diagnostics.SystemRebootResponse> {
-        let response = await this.client.post(PfsenseAPI.diagnostics.post.reboot, body);
+    async RebootSystem(
+        body: PfsenseAPI.diagnostics.SystemRebootRequest
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.SystemRebootResponse>> {
+        return await this.client.post(PfsenseAPI.diagnostics.post.reboot, body);
+    }
+}
+class OneToOne {
+    client: Client;
+    constructor(client: Client) {
+        this.client = client;
+    }
+    async getMapping(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping>> {
+        return await this.client.get(PfsenseAPI.firewall.nat.onetoone.get.mapping, { id });
+    }
+    async postMapping(
+        body: PfsenseAPI.firewall.nat.onetoone.OneToOneMapping
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping>> {
+        return await this.client.post(PfsenseAPI.firewall.nat.onetoone.post.mapping, body);
+    }
+    async patchMapping(
+        body: PfsenseAPI.firewall.nat.onetoone.OneToOneMappingId
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping>> {
+        return await this.client.patch(PfsenseAPI.firewall.nat.onetoone.patch.mapping, body);
+    }
+    async deleteMapping(id: number, apply: boolean): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping>> {
+        return await this.client.delete(PfsenseAPI.firewall.nat.onetoone.del.mapping, { id, apply });
+    }
+    async getMappings(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping[]>> {
+        return await this.client.get(PfsenseAPI.firewall.nat.onetoone.get.mappings, query);
+    }
+    async putMappings(
+        body: PfsenseAPI.firewall.nat.onetoone.OneToOneMapping[]
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping[]>> {
+        return await this.client.put(PfsenseAPI.firewall.nat.onetoone.put.mappings, body);
+    }
+    async deleteMappings(
+        query: PfsenseAPI.queryWithoutSortRequest
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping[]>> {
+        return await this.client.delete(PfsenseAPI.firewall.nat.onetoone.del.mappings, query);
+    }
+}
+class Outbound {
+    client: Client;
+    constructor(client: Client) {
+        this.client = client;
+    }
+    async getMapping(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping>> {
+        return await this.client.get(PfsenseAPI.firewall.nat.outbound.get.mapping, { id });
+    }
+    async postMapping(
+        body: PfsenseAPI.firewall.nat.outbound.OutboundNATMapping
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping>> {
+        return await this.client.post(PfsenseAPI.firewall.nat.outbound.post.mapping, body);
+    }
+    async patchMapping(
+        body: PfsenseAPI.firewall.nat.outbound.OutboundNATMappingId
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping>> {
+        return await this.client.patch(PfsenseAPI.firewall.nat.outbound.patch.mapping, body);
+    }
+    async deleteMapping(id: number, apply: boolean = false): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping>> {
+        return await this.client.delete(PfsenseAPI.firewall.nat.outbound.del.mapping, { id, apply });
+    }
+    async getMappings(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping[]>> {
+        return await this.client.get(PfsenseAPI.firewall.nat.outbound.get.mappings, query);
+    }
+    async putMappings(
+        body: PfsenseAPI.firewall.nat.outbound.OutboundNATMapping[]
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping[]>> {
+        return await this.client.put(PfsenseAPI.firewall.nat.outbound.put.mappings, body);
+    }
+    async deleteMappings(
+        query: PfsenseAPI.queryWithoutSortRequest
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping[]>> {
+        return await this.client.delete(PfsenseAPI.firewall.nat.outbound.del.mappings, query);
+    }
+    async getMode(): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping>> {
+        return await this.client.get(PfsenseAPI.firewall.nat.outbound.get.mode);
+    }
+    async patchMode(
+        body: PfsenseAPI.firewall.nat.outbound.OutboundNATMode
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMode>> {
+        return await this.client.patch(PfsenseAPI.firewall.nat.outbound.patch.mode, body);
+    }
+}
+class PortForward {
+    client: Client;
+    constructor(client: Client) {
+        this.client = client;
+    }
+    async getPortForward(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.PortForward>> {
+        return await this.client.get(PfsenseAPI.firewall.nat.get.portForward, { id });
+    }
+    async postPortForward(body: PfsenseAPI.firewall.nat.PortForward): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.PortForward>> {
+        return await this.client.post(PfsenseAPI.firewall.nat.post.portForward, body);
+    }
+    async patchPortForward(body: PfsenseAPI.firewall.nat.PortForwardId): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.PortForward>> {
+        return await this.client.patch(PfsenseAPI.firewall.nat.patch.portForward, body);
+    }
+    async deletePortForward(id: number, apply: boolean = false): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.PortForward>> {
+        return await this.client.delete(PfsenseAPI.firewall.nat.del.portForward, { id, apply });
+    }
+    async getPortForwards(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.PortForward[]>> {
+        return await this.client.get(PfsenseAPI.firewall.nat.get.portForwards, query);
+    }
+    async putPortForwards(body: PfsenseAPI.firewall.nat.PortForward[]): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.PortForward[]>> {
+        return await this.client.put(PfsenseAPI.firewall.nat.put.portForwards, body);
+    }
+    async deletePortForwards(query: PfsenseAPI.queryWithoutSortRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.PortForward[]>> {
+        return await this.client.delete(PfsenseAPI.firewall.nat.del.portForwards, query);
+    }
+}
+class Nat {
+    client: Client;
+    one_to_one: OneToOne;
+    outbound: Outbound;
+    portForward: PortForward;
+    constructor(client: Client) {
+        this.client = client;
+        this.one_to_one = new OneToOne(client);
+        this.outbound = new Outbound(client);
+        this.portForward = new PortForward(client);
+    }
+}
+class Limiter {
+    client: Client;
+    constructor(client: Client) {
+        this.client = client;
+    }
+    async getBandwidth(
+        parent_id: number,
+        id: number
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiterBandwidth>> {
+        return await this.client.get(PfsenseAPI.firewall.trafficShaper.limiter.get.bandwidth, { parent_id, id });
+    }
+    async postBandwidth(
+        body: PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiterBandwidthParentId
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiterBandwidth>> {
+        return await this.client.post(PfsenseAPI.firewall.trafficShaper.limiter.post.bandwidth, body);
+    }
+    async patchBandwidth(
+        body: PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiterBandwidthId
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiterBandwidth>> {
+        return await this.client.patch(PfsenseAPI.firewall.trafficShaper.limiter.post.bandwidth, body);
+    }
+    async deleteBandwidth(
+        parent_id: number,
+        id: number
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiterBandwidth>> {
+        return await this.client.delete(PfsenseAPI.firewall.trafficShaper.limiter.get.bandwidth, { parent_id, id });
+    }
+    async getLimiter(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiter>> {
+        return await this.client.get(PfsenseAPI.firewall.trafficShaper.limiter.get.default, { id });
+    }
+    async postLimiter(
+        body: PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiter
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiter>> {
+        return await this.client.post(PfsenseAPI.firewall.trafficShaper.limiter.post.default, body);
+    }
+    // Need to change Id to just id required because the rest can be optional
+    async patchLimiter(
+        body: PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiterId
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiter>> {
+        return await this.client.patch(PfsenseAPI.firewall.trafficShaper.limiter.patch.default, body);
+    }
+    async deleteLimiter(
+        id: number,
+        apply: boolean = false
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiter>> {
+        return await this.client.delete(PfsenseAPI.firewall.trafficShaper.limiter.del.default, { id, apply });
+    }
+    async getQueue(
+        parent_id: number,
+        id: number
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiterQueue>> {
+        return await this.client.get(PfsenseAPI.firewall.trafficShaper.limiter.get.queue, { parent_id, id });
+    }
+    async postQueue(body: PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiterQueueParentId) {
+        return await this.client.post<PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiterQueue>(
+            PfsenseAPI.firewall.trafficShaper.limiter.post.queue,
+            body
+        );
+    }
+    async patchQueue(Queue: PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiterQueueId) {
+        return await this.client.patch<PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiterQueue>(
+            PfsenseAPI.firewall.trafficShaper.limiter.patch.queue,
+            Queue
+        );
+    }
+    async deleteQueue(parent_id: number, id: number, apply: boolean = false) {
+        return await this.client.delete<PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiterQueue>(
+            PfsenseAPI.firewall.trafficShaper.limiter.del.queue,
+            { parent_id, id, apply }
+        );
+    }
+    async getLimiters(query: PfsenseAPI.queryRequest) {
+        return await this.client.get<PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiter[]>(
+            PfsenseAPI.firewall.trafficShaper.limiter.get.limiters,
+            query
+        );
+    }
+    async putLimiters(Limiters: PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiter[]) {
+        return await this.client.put<PfsenseAPI.firewall.trafficShaper.limiter.TrafficShaperLimiter[]>(
+            PfsenseAPI.firewall.trafficShaper.limiter.put.limiters,
+            Limiters
+        );
+    }
+}
+class TrafficShaper {
+    client: Client;
+    limiter: Limiter;
+    constructor(client: Client) {
+        this.client = client;
+        this.limiter = new Limiter(client);
+    }
+    async getTrafficShaper(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.trafficShaper.TrafficShaper>> {
+        return await this.client.get(PfsenseAPI.firewall.trafficShaper.get.default, { id });
+    }
+    async postTrafficShaper(
+        body: PfsenseAPI.firewall.trafficShaper.TrafficShaper
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.trafficShaper.TrafficShaper>> {
+        return await this.client.post(PfsenseAPI.firewall.trafficShaper.post.default, body);
+    }
+    async patchTrafficShaper(
+        body: PfsenseAPI.firewall.trafficShaper.TrafficShaperId
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.trafficShaper.TrafficShaperId>> {
+        return await this.client.post(PfsenseAPI.firewall.trafficShaper.patch.default, body);
+    }
+    async deleteTrafficShaper(id: number, apply: boolean = false): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.trafficShaper.TrafficShaper>> {
+        return await this.client.delete(PfsenseAPI.firewall.trafficShaper.del.default, { id, apply });
+    }
+    async getQueue(parent_id: number, id: number) {
+        return await this.client.get<PfsenseAPI.firewall.trafficShaper.TrafficShaperQueue>(PfsenseAPI.firewall.trafficShaper.get.queue, {
+            parent_id,
+            id,
+        });
+    }
+    async postQueue(body: PfsenseAPI.firewall.trafficShaper.TrafficShaperQueueParentId) {
+        return await this.client.post<PfsenseAPI.firewall.trafficShaper.TrafficShaperQueue>(PfsenseAPI.firewall.trafficShaper.post.queue, body);
+    }
+    async patchQueue(body: PfsenseAPI.firewall.trafficShaper.TrafficShaperQueueId) {
+        return await this.client.patch<PfsenseAPI.firewall.trafficShaper.TrafficShaperQueue>(PfsenseAPI.firewall.trafficShaper.patch.queue, body);
+    }
+    async deleteQueue(parent_id: number, id: number, apply: boolean = false) {
+        return await this.client.delete<PfsenseAPI.firewall.trafficShaper.TrafficShaperQueue>(PfsenseAPI.firewall.trafficShaper.del.queue, {
+            parent_id,
+            id,
+            apply,
+        });
+    }
+    async getTrafficShapers(query: PfsenseAPI.queryRequest) {
+        return await this.client.get<PfsenseAPI.firewall.trafficShaper.TrafficShaper[]>(PfsenseAPI.firewall.trafficShaper.get.trafficShapers, query);
+    }
+    async putTrafficShapers(body: PfsenseAPI.firewall.trafficShaper.TrafficShaper[]) {
+        return await this.client.put<PfsenseAPI.firewall.trafficShaper.TrafficShaper[]>(PfsenseAPI.firewall.trafficShaper.put.trafficShapers, body);
+    }
+    async deleteTrafficShapers(query: PfsenseAPI.queryWithoutSortRequest) {
+        return await this.client.delete<PfsenseAPI.firewall.trafficShaper.TrafficShaper[]>(
+            PfsenseAPI.firewall.trafficShaper.del.trafficShapers,
+            query
+        );
+    }
+}
 
-        return response.data;
+class VirtualIP {
+    client: Client;
+    constructor(client: Client) {
+        this.client = client;
+    }
+    async apply() {
+        return await this.client.post<PfsenseAPI.firewall.virtualIp.VirtualIpApplied>(PfsenseAPI.firewall.post.apply, {});
+    }
+    async getVirtualIp(id: number) {
+        return await this.client.get<PfsenseAPI.firewall.virtualIp.VirtualIp>(PfsenseAPI.firewall.virtualIp.get.default, { id });
+    }
+    async postVirtualIp(VirtualIp: PfsenseAPI.firewall.virtualIp.VirtualIpRequest) {
+        return await this.client.post<PfsenseAPI.firewall.virtualIp.VirtualIp>(PfsenseAPI.firewall.virtualIp.post.default, VirtualIp);
+    }
+    async patchVirtualIp(VirtualIp: PfsenseAPI.firewall.virtualIp.VirtualIpId) {
+        return await this.client.patch<PfsenseAPI.firewall.virtualIp.VirtualIp>(PfsenseAPI.firewall.virtualIp.patch.default, VirtualIp);
+    }
+    async deleteVirtualIp(id: number, apply: boolean = false) {
+        return await this.client.delete<PfsenseAPI.firewall.virtualIp.VirtualIp>(PfsenseAPI.firewall.virtualIp.del.default, { id, apply });
+    }
+    async getVirtualIps(query: PfsenseAPI.queryRequest) {
+        return await this.client.get<PfsenseAPI.firewall.virtualIp.VirtualIp[]>(PfsenseAPI.firewall.virtualIp.get.virtualIps, query);
+    }
+    async deleteVirtualIps(query: PfsenseAPI.queryWithoutSortRequest) {
+        return await this.client.delete<PfsenseAPI.firewall.virtualIp.VirtualIp[]>(PfsenseAPI.firewall.virtualIp.del.virtualIps, query);
+    }
+}
+
+class Firewall {
+    client: Client;
+    nat: Nat;
+    trafficShaper: TrafficShaper;
+    virtualIp: VirtualIP;
+
+    constructor(client: Client) {
+        this.client = client;
+        this.nat = new Nat(client);
+        this.trafficShaper = new TrafficShaper(client);
+        this.virtualIp = new VirtualIP(client);
+    }
+
+    async getAdvancedSettings(): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallAdvancedSettings>> {
+        return await this.client.get(PfsenseAPI.firewall.get.advancedSettings);
+    }
+    async patchAdvancedSettings(
+        body: PfsenseAPI.firewall.AdvancedSettingsRequest
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallAdvancedSettings>> {
+        return await this.client.patch(PfsenseAPI.firewall.patch.advancedSettings, body);
+    }
+    async getAlias(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallAlias>> {
+        return await this.client.get(PfsenseAPI.firewall.get.alias, { id });
+    }
+    async postAlias(body: PfsenseAPI.firewall.FirewallAlias): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallAlias>> {
+        return await this.client.post(PfsenseAPI.firewall.post.alias, body);
+    }
+    async patchAlias(body: PfsenseAPI.firewall.FirewallAlias): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallAlias>> {
+        return await this.client.patch(PfsenseAPI.firewall.patch.alias, body);
+    }
+    async deleteAlias(id: number, apply: boolean = false): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallAlias>> {
+        return await this.client.delete(PfsenseAPI.firewall.del.alias, { id, apply });
+    }
+    async getAliases(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallAlias[]>> {
+        return await this.client.get(PfsenseAPI.firewall.get.aliases, query);
+    }
+    async putAliases(body: PfsenseAPI.firewall.FirewallAlias[]): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallAlias[]>> {
+        return await this.client.put(PfsenseAPI.firewall.put.aliases, body);
+    }
+    async deleteAliases(query: PfsenseAPI.queryWithoutSortRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallAlias[]>> {
+        return await this.client.delete(PfsenseAPI.firewall.del.aliases, query);
+    }
+    async apply(): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallApply>> {
+        return await this.client.post(PfsenseAPI.firewall.post.apply, {});
+    }
+    async getRule(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallRule>> {
+        return await this.client.get(PfsenseAPI.firewall.get.rule, { id });
+    }
+    async postRule(body: PfsenseAPI.firewall.FirewallRule): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallRule>> {
+        return await this.client.post(PfsenseAPI.firewall.post.rule, body);
+    }
+    async patchRule(body: PfsenseAPI.firewall.FirewallRuleId): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallRule>> {
+        return await this.client.patch(PfsenseAPI.firewall.patch.rule, body);
+    }
+    async deleteRule(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallRule>> {
+        return await this.client.delete(PfsenseAPI.firewall.del.rule, { id });
+    }
+    async getRules(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallRule[]>> {
+        return await this.client.get(PfsenseAPI.firewall.get.rules, query);
+    }
+    async putRules(body: PfsenseAPI.firewall.FirewallRule[]): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallRule[]>> {
+        return await this.client.put(PfsenseAPI.firewall.put.rules, body);
+    }
+    async deleteRules(query: PfsenseAPI.queryWithoutSortRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.FirewallRule[]>> {
+        return await this.client.delete(PfsenseAPI.firewall.del.rules, query);
+    }
+    async getSchedule(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.schedule.FirewallSchedule>> {
+        return await this.client.get(PfsenseAPI.firewall.schedule.get.default, { id });
+    }
+    async postSchedule(
+        body: PfsenseAPI.firewall.schedule.FirewallSchedule
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.schedule.FirewallSchedule>> {
+        return await this.client.post(PfsenseAPI.firewall.schedule.post.default, body);
+    }
+    async patchSchedule(
+        body: PfsenseAPI.firewall.schedule.FirewallScheduleId
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.schedule.FirewallSchedule>> {
+        return await this.client.patch(PfsenseAPI.firewall.schedule.patch.default, body);
+    }
+    async deleteSchedule(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.schedule.FirewallSchedule>> {
+        return await this.client.delete(PfsenseAPI.firewall.schedule.del.default, { id });
+    }
+    async getScheduleTimeRange(parent_id: number, id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.schedule.FirewallSchedule>> {
+        return await this.client.get(PfsenseAPI.firewall.schedule.get.time_range, { parent_id, id });
+    }
+    async postScheduleTimeRange(
+        body: PfsenseAPI.firewall.schedule.FirewallScheduleTimeRangeWithParentId
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.schedule.FirewallScheduleTimeRange>> {
+        return await this.client.post(PfsenseAPI.firewall.schedule.post.time_range, body);
+    }
+    async patchScheduleTimeRange(
+        body: PfsenseAPI.firewall.schedule.FirewallScheduleTimeRange
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.schedule.FirewallScheduleTimeRange>> {
+        return await this.client.patch(PfsenseAPI.firewall.schedule.patch.time_range, body);
+    }
+    async deleteScheduleTimeRange(
+        parent_id: number,
+        id: number
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.schedule.FirewallScheduleTimeRange>> {
+        return await this.client.delete(PfsenseAPI.firewall.schedule.del.time_range, { parent_id, id });
+    }
+    async getSchedules(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.schedule.FirewallSchedule[]>> {
+        return await this.client.get(PfsenseAPI.firewall.schedule.get.schedules, query);
+    }
+    async putSchedules(
+        body: PfsenseAPI.firewall.schedule.FirewallSchedule[]
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.schedule.FirewallSchedule[]>> {
+        return await this.client.put(PfsenseAPI.firewall.schedule.put.schedules, body);
+    }
+    async deleteSchedules(
+        query: PfsenseAPI.queryWithoutSortRequest
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.schedule.FirewallSchedule[]>> {
+        return await this.client.delete(PfsenseAPI.firewall.schedule.del.schedules, query);
+    }
+    async getState(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.state.FirewallState[]>> {
+        return await this.client.get(PfsenseAPI.firewall.state.get.default, query);
+    }
+    async deleteState(query: PfsenseAPI.queryWithoutSortRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.state.FirewallState[]>> {
+        return await this.client.delete(PfsenseAPI.firewall.state.del.default, query);
+    }
+    async getStateSize(): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.state.FirewallStateSize>> {
+        return await this.client.get(PfsenseAPI.firewall.state.get.size);
+    }
+    async patchStateSize(
+        body: PfsenseAPI.firewall.state.FirewallStateSizeRequest
+    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.state.FirewallStateSize>> {
+        return await this.client.patch(PfsenseAPI.firewall.state.patch.size, body);
     }
 }
 
@@ -101,6 +489,7 @@ class Pfsense {
     client: any;
     auth: Auth;
     diagnostics: Diagnostics;
+    firewall: Firewall;
     constructor(host: string, api_key: string, { version } = { version: "v2" }) {
         this.version = version;
         this.defaultEndpoint = "/api/" + this.version;
@@ -113,19 +502,21 @@ class Pfsense {
         });
         this.auth = new Auth(this.client);
         this.diagnostics = new Diagnostics(this.client);
+        this.firewall = new Firewall(this.client);
     }
 }
 
 export namespace PfsenseAPI {
-    export interface APIResponse {
+    export interface APIResponse<T> {
         code: number;
         status: string;
         response_id: string;
         message: string;
-        data: any;
+        data: T;
         _links: any;
     }
-    export interface APIResponseError extends APIResponse {
+
+    export interface APIResponseError extends APIResponse<any> {
         code: 400 | 401 | 403 | 404 | 406 | 409 | 415 | 422 | 424 | 500 | 503;
     }
 
@@ -240,6 +631,20 @@ export namespace PfsenseAPI {
                     mapping = "/firewall/nat/one_to_one/mapping",
                     mappings = "/firewall/nat/one_to_one/mappings",
                 }
+                export interface OneToOneMapping {
+                    interface: string;
+                    disabled: boolean;
+                    nobinat: boolean;
+                    natreflection: string;
+                    ipprotocol: string;
+                    external: string;
+                    source: string;
+                    destination: string;
+                    descr: string;
+                }
+                export interface OneToOneMappingId extends OneToOneMapping {
+                    id: number;
+                }
                 export enum post {
                     mapping = "/firewall/nat/one_to_one/mapping",
                 }
@@ -260,6 +665,31 @@ export namespace PfsenseAPI {
                     mappings = "/firewall/nat/outbound/mappings",
                     mode = "/firewall/nat/outbound/mode",
                 }
+                export interface OutboundNATMode {
+                    mode: string;
+                }
+                export interface OutboundNATMapping {
+                    interface: string;
+                    protocol: string;
+                    disabled: boolean;
+                    nonat: string;
+                    nosync: boolean;
+                    source: string;
+                    source_port: string;
+                    destination: string;
+                    destination_port: string;
+                    target: string;
+                    target_subnet: string;
+                    nat_port: string;
+                    static_nat_port: string;
+                    poolopts: string;
+                    source_hash_key: string;
+                    descr: string;
+                }
+                export interface OutboundNATMappingId extends OutboundNATMapping {
+                    id: number;
+                }
+
                 export enum post {
                     mapping = "/firewall/nat/outbound/mapping",
                 }
@@ -279,6 +709,31 @@ export namespace PfsenseAPI {
                 portForward = "/firewall/nat/port_forward",
                 portForwards = "/firewall/nat/port_forwards",
             }
+            export interface PortForward {
+                interface: string;
+                ipprotocol: string;
+                protocol: string;
+                source: string;
+                source_port: string;
+                destination: string;
+                destination_port: string;
+                target: string;
+                local_port: string;
+                disabled: boolean;
+                nordr: boolean;
+                nosync: boolean;
+                descr: string;
+                natreflection: string;
+                associated_rule_id: string;
+                created_time?: string;
+                created_by?: string;
+                updated_time?: string;
+                updated_by?: string;
+            }
+            export interface PortForwardId extends PortForward {
+                id: number;
+            }
+
             export enum post {
                 portForward = "/firewall/nat/port_forward",
             }
@@ -297,6 +752,33 @@ export namespace PfsenseAPI {
             export enum get {
                 default = "/firewall/schedule",
                 time_range = "/firewall/schedule/time_range",
+                schedules = "/firewall/schedules",
+            }
+            export interface FirewallSchedule {
+                schedlabel?: string;
+                name: string;
+                descr: string;
+                active?: boolean;
+                timerange: {
+                    position: number[];
+                    month: number[];
+                    day: number[];
+                    hour: string;
+                    rangedescr?: string;
+                }[];
+            }
+            export interface FirewallScheduleTimeRangeWithParentId extends FirewallScheduleTimeRange {
+                parent_id: number;
+            }
+            export interface FirewallScheduleTimeRange {
+                position: number;
+                month: number;
+                day: number;
+                hour: string;
+                rangedescr: string;
+            }
+            export interface FirewallScheduleId extends FirewallSchedule {
+                id: number;
             }
             export enum post {
                 default = "/firewall/schedule",
@@ -305,30 +787,45 @@ export namespace PfsenseAPI {
             export enum del {
                 default = "/firewall/schedule",
                 time_range = "/firewall/schedule/time_range",
+                schedules = "/firewall/schedules",
             }
             export enum patch {
                 default = "/firewall/schedule",
                 time_range = "/firewall/schedule/time_range",
             }
-            export enum put {}
-        }
-        export namespace schedules {
-            export enum get {
-                default = "/firewall/schedules",
-            }
-            export enum post {}
-            export enum del {
-                default = "/firewall/schedules",
-            }
-            export enum patch {}
             export enum put {
-                default = "/firewall/schedules",
+                schedules = "/firewall/schedules",
             }
         }
-        export namespace spaces {
+
+        export namespace state {
             export enum get {
                 default = "/firewall/states",
                 size = "/firewall/states/size",
+            }
+            export interface FirewallState {
+                interface: string | null;
+                protocol: string | null;
+                direction: string | null;
+                source: string | null;
+                destination: string | null;
+                state: string | null;
+                age: string | null;
+                expires_in: string | null;
+                packets_total: number | null;
+                packets_in: number | null;
+                packets_out: number | null;
+                bytes_total: number | null;
+                bytes_in: number | null;
+                bytes_out: number | null;
+            }
+            export interface FirewallStateSize {
+                maximumstates: number;
+                defaultmaximumstates?: number;
+                currentstates?: number;
+            }
+            export interface FirewallStateSizeRequest {
+                maximumstates: number;
             }
             export enum post {}
             export enum del {
@@ -345,6 +842,172 @@ export namespace PfsenseAPI {
                     default = "/firewall/traffic_shaper/limiter/",
                     bandwidth = "/firewall/traffic_shaper/limiter/bandwidth",
                     queue = "/firewall/traffic_shaper/limiter/queue",
+                    limiters = "/firewall/traffic_shaper/limiters",
+                }
+                export interface TrafficShaperLimiter {
+                    name: string;
+                    number?: number;
+                    enabled: boolean;
+                    mask: "none" | "srcaddress" | "dstaddress";
+                    maskbits: number;
+                    maskbitsv6: number;
+                    qlimit?: number;
+                    ecn: boolean;
+                    description: string;
+                    aqm: "droptail" | "codel" | "pie" | "red" | "gred";
+                    sched: "wf2q+" | "fifo" | "qfq" | "rr" | "prio" | "fq_codel" | "fq_pie";
+                    param_codel_target: number;
+                    param_codel_interval: number;
+                    param_pie_target: number;
+                    param_pie_tupdate: number;
+                    param_pie_alpha: number;
+                    param_pie_beta: number;
+                    param_pie_max_burst: number;
+                    param_pie_max_ecnth: number;
+                    pie_onoff: boolean;
+                    pie_capdrop: boolean;
+                    pie_qdelay: boolean;
+                    pie_pderand: boolean;
+                    param_red_w_q: number;
+                    param_red_min_th: number;
+                    param_red_max_th: number;
+                    param_red_max_p: number;
+                    param_gred_w_q: number;
+                    param_gred_min_th: number;
+                    param_gred_max_th: number;
+                    param_gred_max_p: number;
+                    param_fq_codel_target: number;
+                    param_fq_codel_interval: number;
+                    param_fq_codel_quantum?: number;
+                    param_fq_codel_limit?: number;
+                    param_fq_codel_flows?: number;
+                    param_fq_pie_target: number;
+                    param_fq_pie_tupdate: number;
+                    param_fq_pie_alpha: number;
+                    param_fq_pie_beta: number;
+                    param_fq_pie_max_burst: number;
+                    param_fq_pie_max_ecnth: number;
+                    param_fq_pie_quantum?: number;
+                    param_fq_pie_limit?: number;
+                    param_fq_pie_flows?: number;
+                    delay?: number;
+                    plr?: number;
+                    buckets?: number;
+                    bandwidth: {
+                        profile: string;
+                        bandwidth: number;
+                        unit: string;
+                    }[];
+                    queue: {
+                        name: string;
+                        enabled: boolean;
+                        mask: "none" | "srcaddress" | "dstaddress";
+                        maskbits: number;
+                        maskbitsv6: number;
+                        qlimit?: number;
+                        ecn: boolean;
+                        description: string;
+                        aqm: "droptail" | "codel" | "pie" | "red" | "gred";
+                        sched: "wf2q+" | "fifo" | "qfq" | "rr" | "prio" | "fq_codel" | "fq_pie";
+                        param_codel_target: number;
+                        param_codel_interval: number;
+                        param_pie_target: number;
+                        param_pie_tupdate: number;
+                        param_pie_alpha: number;
+                        param_pie_beta: number;
+                        param_pie_max_burst: number;
+                        param_pie_max_ecnth: number;
+                        pie_onoff: boolean;
+                        pie_capdrop: boolean;
+                        pie_qdelay: boolean;
+                        pie_pderand: boolean;
+                        param_red_w_q: number;
+                        param_red_min_th: number;
+                        param_red_max_th: number;
+                        param_red_max_p: number;
+                        param_gred_w_q: number;
+                        param_gred_min_th: number;
+                        param_gred_max_th: number;
+                        param_gred_max_p: number;
+                        param_fq_codel_target: number;
+                        param_fq_codel_interval: number;
+                        param_fq_codel_quantum?: number;
+                        param_fq_codel_limit?: number;
+                        param_fq_codel_flows?: number;
+                        param_fq_pie_target: number;
+                        param_fq_pie_tupdate: number;
+                        param_fq_pie_alpha: number;
+                        param_fq_pie_beta: number;
+                        param_fq_pie_max_burst: number;
+                        param_fq_pie_max_ecnth: number;
+                        param_fq_pie_quantum?: number;
+                        param_fq_pie_limit?: number;
+                        param_fq_pie_flows?: number;
+                        delay?: number;
+                        plr?: number;
+                        buckets?: number;
+                        bandwidth: {
+                            profile: string;
+                            bandwidth: number;
+                            unit: string;
+                        }[];
+                    }[];
+                }
+                export interface TrafficShaperLimiterQueue {
+                    name: string;
+                    number?: number;
+                    enabled: boolean;
+                    mask: "none" | "srcaddress" | "dstaddress";
+                    maskbits: number;
+                    maskbitsv6: number;
+                    qlimit?: number;
+                    ecn: boolean;
+                    description: string;
+                    aqm: "droptail" | "codel" | "pie" | "red" | "gred";
+                    param_codel_target: number;
+                    param_codel_interval: number;
+                    param_pie_target: number;
+                    param_pie_tupdate: number;
+                    param_pie_alpha: number;
+                    param_pie_beta: number;
+                    param_pie_max_burst: number;
+                    param_pie_max_ecnth: number;
+                    pie_onoff: boolean;
+                    pie_capdrop: boolean;
+                    pie_qdelay: boolean;
+                    pie_pderand: boolean;
+                    param_red_w_q: number;
+                    param_red_min_th: number;
+                    param_red_max_th: number;
+                    param_red_max_p: number;
+                    param_gred_w_q: number;
+                    param_gred_min_th: number;
+                    param_gred_max_th: number;
+                    param_gred_max_p: number;
+                    weight?: number;
+                    plr?: number;
+                    buckets?: number;
+                }
+                export interface TrafficShaperLimiterQueueParentId extends TrafficShaperLimiterQueue {
+                    parent_id: number;
+                }
+                export interface TrafficShaperLimiterQueueId extends TrafficShaperLimiterQueueParentId {
+                    id: number;
+                }
+
+                export interface TrafficShaperLimiterId extends TrafficShaperLimiter {
+                    id: number;
+                }
+                export interface TrafficShaperLimiterBandwidth {
+                    bw: number;
+                    bwscale: string;
+                    bwsched: string;
+                }
+                export interface TrafficShaperLimiterBandwidthParentId extends TrafficShaperLimiterBandwidth {
+                    parent_id: number;
+                }
+                export interface TrafficShaperLimiterBandwidthId extends TrafficShaperLimiterBandwidthParentId {
+                    id: number;
                 }
                 export enum post {
                     default = "/firewall/traffic_shaper/limiter/",
@@ -361,77 +1024,170 @@ export namespace PfsenseAPI {
                     bandwidth = "/firewall/traffic_shaper/limiter/bandwidth",
                     queue = "/firewall/traffic_shaper/limiter/queue",
                 }
-                export enum put {}
-            }
-            export namespace limiters {
-                export enum get {
-                    default = "/firewall/traffic_shaper/limiters",
+                export enum put {
+                    limiters = "/firewall/traffic_shaper/limiters",
                 }
-                export enum post {
-                    default = "/firewall/traffic_shaper/limiters",
-                }
-                export enum del {}
-                export enum patch {}
-                export enum put {}
             }
+
             export enum get {
                 default = "/firewall/traffic_shaper",
                 queue = "/firewall/traffic_shaper/queue",
+                trafficShapers = "/firewall/traffic_shapers",
             }
+            export interface TrafficShaper {
+                enabled: boolean;
+                interface: string;
+                name?: string;
+                scheduler: string;
+                bandwidthtype: string;
+                bandwidth: number;
+                qlimit?: number;
+                tbrconfig?: number;
+                queue: {
+                    interface?: string;
+                    enabled: boolean;
+                    name: string;
+                    priority: number;
+                    qlimit: number;
+                    description: string;
+                    default: boolean;
+                    red: boolean;
+                    rio: boolean;
+                    ecn: boolean;
+                    codel: boolean;
+                    bandwidthtype: string;
+                    bandwidth: number;
+                    buckets?: number;
+                    hogs?: number;
+                    borrow: boolean;
+                    upperlimit: boolean;
+                    upperlimit_m1?: string;
+                    upperlimit_d?: number;
+                    upperlimit_m2: string;
+                    realtime: boolean;
+                    realtime_m1?: string;
+                    realtime_d?: number;
+                    realtime_m2: string;
+                    linkshare: boolean;
+                    linkshare_m1?: string;
+                    linkshare_d?: number;
+                    linkshare_m2: string;
+                }[];
+            }
+            export interface TrafficShaperId extends TrafficShaper {
+                id: number;
+            }
+
+            export interface TrafficShaperQueue {
+                interface?: string;
+                enabled: boolean;
+                name: string;
+                priority: number;
+                qlimit: number;
+                description: string;
+                default: boolean;
+                red: boolean;
+                rio: boolean;
+                ecn: boolean;
+                codel: boolean;
+                bandwidthtype: string;
+                bandwidth: number;
+                buckets?: number;
+                hogs?: number;
+                borrow?: boolean;
+                upperlimit: boolean;
+                upperlimit_m1?: string;
+                upperlimit_d?: number;
+                upperlimit_m2: string;
+                realtime: boolean;
+                realtime_m1?: string;
+                realtime_d?: number;
+                realtime_m2: string;
+                linkshare: boolean;
+                linkshare_m1?: string;
+                linkshare_d?: number;
+                linkshare_m2: string;
+            }
+            export interface TrafficShaperQueueParentId extends TrafficShaperQueue {
+                parent_id: number;
+            }
+            export interface TrafficShaperQueueId extends TrafficShaperQueueParentId {
+                id: number;
+            }
+
             export enum post {
+                default = "/firewall/traffic_shaper",
                 queue = "/firewall/traffic_shaper/queue",
             }
             export enum del {
                 default = "/firewall/traffic_shaper",
                 queue = "/firewall/traffic_shaper/queue",
+                trafficShapers = "/firewall/traffic_shapers",
             }
             export enum patch {
                 default = "/firewall/traffic_shaper",
                 queue = "/firewall/traffic_shaper/queue",
             }
-            export enum put {}
-        }
-        export namespace trafficShapers {
-            export enum get {
-                default = "/firewall/traffic_shapers",
-            }
-            export enum post {}
-            export enum del {
-                default = "/firewall/traffic_shapers",
-            }
-            export enum patch {}
             export enum put {
-                default = "/firewall/traffic_shapers",
+                trafficShapers = "/firewall/traffic_shapers",
             }
         }
+
         export namespace virtualIp {
             export enum get {
                 default = "/firewall/virtual_ip",
                 apply = "/firewall/virtual_ip/apply",
+                virtualIps = "/firewall/virtual_ips",
             }
+            export interface VirtualIpRequest {
+                mode: "ipalias" | "proxyarp" | "carp" | "other";
+                interface: string;
+                type: "single" | "network";
+                subnet: string;
+                subnet_bits: number;
+                descr: string;
+                noexpand?: boolean;
+                vhid?: number;
+                advbase?: number;
+                advskew?: number;
+                password?: string;
+            }
+            export interface VirtualIpId extends VirtualIpRequest {
+                id: number;
+            }
+            export interface VirtualIp {
+                uniqid?: string;
+                mode: "ipalias" | "proxyarp" | "carp" | "other";
+                interface: string;
+                type: "single" | "network";
+                subnet: string;
+                subnet_bits: number;
+                descr: string;
+                noexpand?: boolean;
+                vhid?: number;
+                advbase?: number;
+                advskew?: number;
+                password?: string;
+                carp_status?: string;
+            }
+            export interface VirtualIpApplied {
+                applied: boolean;
+            }
+
             export enum post {
                 default = "/firewall/virtual_ip",
                 apply = "/firewall/virtual_ip/apply",
             }
             export enum del {
                 default = "/firewall/virtual_ip",
+                virtualIps = "/firewall/virtual_ips",
             }
             export enum patch {
                 default = "/firewall/virtual_ip",
             }
             export enum put {}
         }
-        export namespace virtualIps {
-            export enum get {
-                default = "/firewall/virtual_ips",
-            }
-            export enum post {}
-            export enum del {
-                default = "/firewall/virtual_ips",
-            }
-            export enum patch {}
-            export enum put {}
-        }
+
         export enum get {
             advancedSettings = "/firewall/advanced_settings",
             alias = "/firewall/alias",
@@ -440,10 +1196,65 @@ export namespace PfsenseAPI {
             rule = "/firewall/rule",
             rules = "/firewall/rules",
         }
+        export interface FirewallRule {
+            type: string;
+            interface: string[];
+            ipprotocol: string;
+            protocol: string;
+            icmptype: string[];
+            source: string;
+            source_port: string;
+            destination: string;
+            destination_port: string;
+            descr: string;
+            disabled: boolean;
+            log: boolean;
+            statetype: string;
+            tcp_flags_any: string;
+            tcp_flags_out_of: string[];
+            tcp_flags_set: string[];
+            gateway: string;
+            sched: string;
+            dnpipe: string;
+            pdnpipe: string;
+            defaultqueue: string;
+            ackqueue: string;
+            floating: boolean;
+            quick: boolean;
+            direction: string;
+            tracker: number;
+            associated_rule_id: string;
+            created_time?: number;
+            created_by?: string;
+            updated_time?: number;
+            updated_by?: string;
+        }
+        export interface FirewallRuleId extends FirewallRule {
+            id: number;
+        }
+        export interface FirewallAlias {
+            description: string;
+            name: string;
+            type: string;
+            descr: string;
+            address: string[];
+            detail: string[];
+        }
+        export interface FirewallAdvancedSettings {
+            description: string;
+            aliasesresolveinterval: number;
+            checkaliaseurlcert: boolean;
+        }
+
         export enum post {
             alias = "/firewall/alias",
             apply = "/firewall/apply",
             rule = "/firewall/rule",
+        }
+        export interface FirewallApply {
+            description: string;
+            applied: boolean;
+            pending_subsystem: string[];
         }
         export enum del {
             alias = "/firewall/alias",
@@ -459,6 +1270,10 @@ export namespace PfsenseAPI {
             advancedSettings = "/firewall/advanced_settings",
             alias = "/firewall/alias",
             rule = "/firewall/rule",
+        }
+        export interface AdvancedSettingsRequest {
+            aliasesresolveinterval: number;
+            checkaliaseurlcert: boolean;
         }
     }
     export namespace graphQL {
