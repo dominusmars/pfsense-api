@@ -479,6 +479,99 @@ class Firewall {
         return await this.client.patch(PfsenseAPI.firewall.state.patch.size, body);
     }
 }
+class GraphQL {
+    client: Client;
+    constructor(client: Client) {
+        this.client = client;
+    }
+    async query(query: PfsenseAPI.graphQL.GraphQLRequest) {
+        return await this.client.post<PfsenseAPI.graphQL.GraphQLResponse>(PfsenseAPI.graphQL.post.default, { query });
+    }
+}
+class Interface {
+    client: Client;
+    constructor(client: Client) {
+        this.client = client;
+    }
+    async apply() {
+        return await this.client.post<PfsenseAPI.fInterface.InterfaceApply>(PfsenseAPI.fInterface.post.apply, {});
+    }
+    async getAvailableInterfaces(query: PfsenseAPI.queryRequest) {
+        return await this.client.get<PfsenseAPI.fInterface.InterfaceAvailable[]>(PfsenseAPI.fInterface.get.available, query);
+    }
+    async getBridge(id: number) {
+        return await this.client.get<PfsenseAPI.fInterface.InterfaceBridge>(PfsenseAPI.fInterface.get.bridge, { id });
+    }
+    async postBridge(Bridge: PfsenseAPI.fInterface.InterfaceBridgeRequest) {
+        return await this.client.post<PfsenseAPI.fInterface.InterfaceBridge>(PfsenseAPI.fInterface.post.bridge, Bridge);
+    }
+    async patchBridge(Bridge: PfsenseAPI.fInterface.InterfaceBridgeRequest) {
+        return await this.client.patch<PfsenseAPI.fInterface.InterfaceBridge>(PfsenseAPI.fInterface.patch.bridge, Bridge);
+    }
+    async deleteBridge(id: number) {
+        return await this.client.delete<PfsenseAPI.fInterface.InterfaceBridge>(PfsenseAPI.fInterface.del.bridge, { id });
+    }
+    async getBridges(query: PfsenseAPI.queryRequest) {
+        return await this.client.get<PfsenseAPI.fInterface.InterfaceBridge[]>(PfsenseAPI.fInterface.get.bridges, query);
+    }
+    async getGroup(id: number) {
+        return await this.client.get<PfsenseAPI.fInterface.InterfaceGroup>(PfsenseAPI.fInterface.get.group, { id });
+    }
+    async postGroup(Group: PfsenseAPI.fInterface.InterfaceGroupRequest) {
+        return await this.client.post<PfsenseAPI.fInterface.InterfaceGroup>(PfsenseAPI.fInterface.post.group, Group);
+    }
+    async patchGroup(Group: PfsenseAPI.fInterface.InterfaceGroupRequestId) {
+        return await this.client.patch<PfsenseAPI.fInterface.InterfaceGroup>(PfsenseAPI.fInterface.patch.group, Group);
+    }
+    async deleteGroup(id: number) {
+        return await this.client.delete<PfsenseAPI.fInterface.InterfaceGroup>(PfsenseAPI.fInterface.del.group, { id });
+    }
+    async getGroups(query: PfsenseAPI.queryRequest) {
+        return await this.client.get<PfsenseAPI.fInterface.InterfaceGroup[]>(PfsenseAPI.fInterface.get.groups, query);
+    }
+    async putGroups(Groups: PfsenseAPI.fInterface.InterfaceGroup[]) {
+        return await this.client.put<PfsenseAPI.fInterface.InterfaceGroup[]>(PfsenseAPI.fInterface.put.groups, Groups);
+    }
+    async deleteGroups(query: PfsenseAPI.queryWithoutSortRequest) {
+        return await this.client.delete<PfsenseAPI.fInterface.InterfaceGroup[]>(PfsenseAPI.fInterface.del.groups, query);
+    }
+    async getVlan(id: number) {
+        return await this.client.get<PfsenseAPI.fInterface.InterfaceVlan>(PfsenseAPI.fInterface.get.vlan, { id });
+    }
+    async postVlan(Vlan: PfsenseAPI.fInterface.InterfaceVlan) {
+        return await this.client.post<PfsenseAPI.fInterface.InterfaceVlan>(PfsenseAPI.fInterface.post.vlan, Vlan);
+    }
+    async patchVlan(Vlan: PfsenseAPI.fInterface.InterfaceVlanId) {
+        return await this.client.patch<PfsenseAPI.fInterface.InterfaceVlan>(PfsenseAPI.fInterface.patch.vlan, Vlan);
+    }
+    async deleteVlan(id: number) {
+        return await this.client.delete<PfsenseAPI.fInterface.InterfaceVlan>(PfsenseAPI.fInterface.del.vlan, { id });
+    }
+    async getVlans(query: PfsenseAPI.queryRequest) {
+        return await this.client.get<PfsenseAPI.fInterface.InterfaceVlan[]>(PfsenseAPI.fInterface.get.vlans, query);
+    }
+    async deleteVlans(query: PfsenseAPI.queryWithoutSortRequest) {
+        return await this.client.delete<PfsenseAPI.fInterface.InterfaceVlan[]>(PfsenseAPI.fInterface.del.vlans, query);
+    }
+    async getInterface(id: number) {
+        return await this.client.get<PfsenseAPI.fInterface.NetworkInterface>(PfsenseAPI.fInterface.get.default, { id });
+    }
+    async postInterface(Interface: PfsenseAPI.fInterface.NetworkInterface) {
+        return await this.client.post<PfsenseAPI.fInterface.NetworkInterface>(PfsenseAPI.fInterface.post.default, Interface);
+    }
+    async patchInterface(Interface: PfsenseAPI.fInterface.NetworkInterfaceId) {
+        return await this.client.patch<PfsenseAPI.fInterface.NetworkInterface>(PfsenseAPI.fInterface.patch.default, Interface);
+    }
+    async deleteInterface(id: number, apply: boolean = false) {
+        return await this.client.delete<PfsenseAPI.fInterface.NetworkInterface>(PfsenseAPI.fInterface.del.default, { id, apply });
+    }
+    async getInterfaces(query: PfsenseAPI.queryRequest) {
+        return await this.client.get<PfsenseAPI.fInterface.NetworkInterface[]>(PfsenseAPI.fInterface.get.interfaces, query);
+    }
+    async deleteInterfaces(query: PfsenseAPI.queryWithoutSortRequest) {
+        return await this.client.delete<PfsenseAPI.fInterface.NetworkInterface[]>(PfsenseAPI.fInterface.del.interfaces, query);
+    }
+}
 
 class Pfsense {
     version: string;
@@ -490,6 +583,8 @@ class Pfsense {
     auth: Auth;
     diagnostics: Diagnostics;
     firewall: Firewall;
+    graphql: GraphQL;
+    interface: Interface;
     constructor(host: string, api_key: string, { version } = { version: "v2" }) {
         this.version = version;
         this.defaultEndpoint = "/api/" + this.version;
@@ -503,6 +598,8 @@ class Pfsense {
         this.auth = new Auth(this.client);
         this.diagnostics = new Diagnostics(this.client);
         this.firewall = new Firewall(this.client);
+        this.graphql = new GraphQL(this.client);
+        this.interface = new Interface(this.client);
     }
 }
 
@@ -1280,6 +1377,14 @@ export namespace PfsenseAPI {
         export enum post {
             default = "/graphql",
         }
+        export interface GraphQLRequest {
+            query: string;
+            variables?: any;
+        }
+        export interface GraphQLResponse {
+            data: any;
+            errors: any;
+        }
     }
     // Only used because interface cannot be a keyword
     export namespace fInterface {
@@ -1295,12 +1400,108 @@ export namespace PfsenseAPI {
             vlan = "/interface/vlan",
             vlans = "/interface/vlans",
         }
+
+        export interface InterfaceApply {
+            applied: boolean;
+            pending_interfaces: string[];
+        }
+        export interface InterfaceAvailable {
+            if: string | null;
+            mac: string | null;
+            dmesg: string | null;
+            in_use_by: string | null;
+        }
+        export interface InterfaceBridge {
+            members: string[];
+            descr: string;
+            bridgeif?: string;
+        }
+        export interface InterfaceGroup {
+            ifname: string;
+            members: string[];
+            descr: string;
+        }
+        export interface InterfaceVlan {
+            if: string;
+            tag: number;
+            vlanif: string;
+            pcp?: number;
+            descr: string;
+        }
+        export interface InterfaceVlanId extends InterfaceVlan {
+            id: number;
+        }
+
+        export interface NetworkInterface {
+            if: string;
+            enable: boolean;
+            descr: string;
+            spoofmac: string;
+            mtu?: number;
+            mss?: number;
+            media: string;
+            mediaopt: string;
+            blockpriv: boolean;
+            blockbogons: boolean;
+            typev4: string;
+            ipaddr: string;
+            subnet: number;
+            gateway?: string;
+            dhcphostname: string;
+            alias_address: string;
+            alias_subnet?: number;
+            dhcprejectfrom: string[];
+            adv_dhcp_config_advanced: boolean;
+            adv_dhcp_pt_values: string;
+            adv_dhcp_pt_timeout?: number;
+            adv_dhcp_pt_retry?: number;
+            adv_dhcp_pt_select_timeout?: number;
+            adv_dhcp_pt_reboot?: number;
+            adv_dhcp_pt_backoff_cutoff?: number;
+            adv_dhcp_pt_initial_interval?: number;
+            adv_dhcp_send_options?: string;
+            adv_dhcp_request_options?: string;
+            adv_dhcp_required_options?: string;
+            adv_dhcp_option_modifiers?: string;
+            adv_dhcp_config_file_override: boolean;
+            adv_dhcp_config_file_override_path?: string;
+            typev6?: string;
+            ipaddrv6: string;
+            subnetv6: number;
+            gatewayv6?: string;
+            ipv6usev4iface: boolean;
+            slaacusev4iface: boolean;
+            prefix_6rd: string;
+            gateway_6rd: string;
+            prefix_6rd_v4plen: number;
+            track6_interface: string;
+            track6_prefix_id_hex: string;
+        }
+        export interface NetworkInterfaceId extends NetworkInterface {
+            id: number;
+        }
+
         export enum post {
             default = "/interface",
             apply = "/interface/apply",
             bridge = "/interface/bridge",
             group = "/interface/group",
             vlan = "/interface/vlan",
+        }
+        export interface InterfaceGroupRequest {
+            ifname: string;
+            members: string[];
+            descr: string;
+        }
+        export interface InterfaceGroupRequestId {
+            id: number;
+        }
+        export interface InterfaceBridgeRequest {
+            members: string[];
+            descr: string;
+        }
+        export interface InterfaceBridgeRequestId extends InterfaceBridgeRequest {
+            id: number;
         }
         export enum del {
             default = "/interface",
@@ -1314,6 +1515,7 @@ export namespace PfsenseAPI {
         export enum patch {
             default = "/interface",
             bridge = "/interface/bridge",
+            group = "/interface/group",
             vlan = "/interface/vlan",
         }
         export enum put {
