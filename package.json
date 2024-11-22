@@ -1,8 +1,12 @@
 {
     "name": "pfsense-api",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Wrapper for pfsense REST api, no association with pfsense ",
     "main": "dist/index.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/dominusmars/pfsense-api"
+    },
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "tsc",
