@@ -5,17 +5,17 @@ class Auth {
     constructor(client: Client) {
         this.client = client;
     }
-    async postKey(body: PfsenseAPI.auth.keyRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.auth.keyResponse>> {
-        return await this.client.post(PfsenseAPI.auth.post.key, body, "basic");
+    async postKey(body: PfsenseAPI.auth.keyRequest) {
+        return await this.client.post<PfsenseAPI.auth.keyResponse>(PfsenseAPI.auth.post.key, body, "basic");
     }
-    async deleteKey(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.auth.keyResponse>> {
-        return await this.client.delete(PfsenseAPI.auth.del.key, { id }, "basic");
+    async deleteKey(id: number) {
+        return await this.client.delete<PfsenseAPI.auth.keyResponse>(PfsenseAPI.auth.del.key, { id }, "basic");
     }
-    async keys(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.auth.keyResponse[]>> {
-        return await this.client.get(PfsenseAPI.auth.get.keys, query);
+    async keys(query: PfsenseAPI.queryRequest) {
+        return await this.client.get<PfsenseAPI.auth.keyResponse[]>(PfsenseAPI.auth.get.keys, query);
     }
-    async deleteKeys(query: PfsenseAPI.queryWithoutSortRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.auth.keyResponse[]>> {
-        return await this.client.delete(PfsenseAPI.auth.del.keys, query);
+    async deleteKeys(query: PfsenseAPI.queryWithoutSortRequest) {
+        return await this.client.delete<PfsenseAPI.auth.keyResponse[]>(PfsenseAPI.auth.del.keys, query);
     }
 }
 
@@ -25,43 +25,39 @@ class Diagnostics {
         this.client = client;
     }
 
-    async arpTable(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.Arp.arpTableResponse[]>> {
-        return await this.client.get(PfsenseAPI.diagnostics.Arp.get.arpTable, query);
+    async arpTable(query: PfsenseAPI.queryRequest) {
+        return await this.client.get<PfsenseAPI.diagnostics.Arp.arpTableResponse[]>(PfsenseAPI.diagnostics.Arp.get.arpTable, query);
     }
-    async deleteArpTable(query: PfsenseAPI.queryWithoutSortRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.Arp.arpTableResponse[]>> {
-        return await this.client.delete(PfsenseAPI.diagnostics.Arp.del.arpTable, query);
+    async deleteArpTable(query: PfsenseAPI.queryWithoutSortRequest) {
+        return await this.client.delete<PfsenseAPI.diagnostics.Arp.arpTableResponse[]>(PfsenseAPI.diagnostics.Arp.del.arpTable, query);
     }
-    async getArpEntry(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.Arp.arpTableResponse>> {
-        return await this.client.get(PfsenseAPI.diagnostics.Arp.get.arpEntry, { id });
+    async getArpEntry(id: number) {
+        return await this.client.get<PfsenseAPI.diagnostics.Arp.arpTableResponse>(PfsenseAPI.diagnostics.Arp.get.arpEntry, { id });
     }
-    async deleteArpEntry(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.Arp.arpTableResponse>> {
-        return await this.client.delete(PfsenseAPI.diagnostics.Arp.del.arpEntry, { id });
+    async deleteArpEntry(id: number) {
+        return await this.client.delete<PfsenseAPI.diagnostics.Arp.arpTableResponse>(PfsenseAPI.diagnostics.Arp.del.arpEntry, { id });
     }
-    async runCommand(command: string): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.CommandResponse>> {
-        return await this.client.post(PfsenseAPI.diagnostics.post.command, { command });
+    async runCommand(command: string) {
+        return await this.client.post<PfsenseAPI.diagnostics.CommandResponse>(PfsenseAPI.diagnostics.post.command, { command });
     }
-    async getConfigRevision(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.config.ConfigHistoryRevision>> {
-        return await this.client.get(PfsenseAPI.diagnostics.config.get.revision, { id });
+    async getConfigRevision(id: number) {
+        return await this.client.get<PfsenseAPI.diagnostics.config.ConfigHistoryRevision>(PfsenseAPI.diagnostics.config.get.revision, { id });
     }
-    async deleteConfigRevision(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.config.ConfigHistoryRevision>> {
-        return await this.client.delete(PfsenseAPI.diagnostics.config.del.revision, { id });
+    async deleteConfigRevision(id: number) {
+        return await this.client.delete<PfsenseAPI.diagnostics.config.ConfigHistoryRevision>(PfsenseAPI.diagnostics.config.del.revision, { id });
     }
-    async getConfigRevisions(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.config.ConfigHistoryRevision[]>> {
-        return await this.client.get(PfsenseAPI.diagnostics.config.get.revisions, query);
+    async getConfigRevisions(query: PfsenseAPI.queryRequest) {
+        return await this.client.get<PfsenseAPI.diagnostics.config.ConfigHistoryRevision[]>(PfsenseAPI.diagnostics.config.get.revisions, query);
     }
-    async deleteConfigRevisions(
-        query: PfsenseAPI.queryWithoutSortRequest
-    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.config.ConfigHistoryRevision[]>> {
-        return await this.client.delete(PfsenseAPI.diagnostics.config.del.revisions, query);
+    async deleteConfigRevisions(query: PfsenseAPI.queryWithoutSortRequest) {
+        return await this.client.delete<PfsenseAPI.diagnostics.config.ConfigHistoryRevision[]>(PfsenseAPI.diagnostics.config.del.revisions, query);
     }
-    async HaltSystem(body: PfsenseAPI.diagnostics.SystemHaltRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.SystemHaltResponse>> {
-        return await this.client.post(PfsenseAPI.diagnostics.post.halt, body);
+    async HaltSystem(body: PfsenseAPI.diagnostics.SystemHaltRequest) {
+        return await this.client.post<PfsenseAPI.diagnostics.SystemHaltResponse>(PfsenseAPI.diagnostics.post.halt, body);
     }
 
-    async RebootSystem(
-        body: PfsenseAPI.diagnostics.SystemRebootRequest
-    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.diagnostics.SystemRebootResponse>> {
-        return await this.client.post(PfsenseAPI.diagnostics.post.reboot, body);
+    async RebootSystem(body: PfsenseAPI.diagnostics.SystemRebootRequest) {
+        return await this.client.post<PfsenseAPI.diagnostics.SystemRebootResponse>(PfsenseAPI.diagnostics.post.reboot, body);
     }
 }
 class OneToOne {
@@ -69,34 +65,29 @@ class OneToOne {
     constructor(client: Client) {
         this.client = client;
     }
-    async getMapping(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping>> {
-        return await this.client.get(PfsenseAPI.firewall.nat.onetoone.get.mapping, { id });
+    async getMapping(id: number) {
+        return await this.client.get<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping>(PfsenseAPI.firewall.nat.onetoone.get.mapping, { id });
     }
-    async postMapping(
-        body: PfsenseAPI.firewall.nat.onetoone.OneToOneMapping
-    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping>> {
-        return await this.client.post(PfsenseAPI.firewall.nat.onetoone.post.mapping, body);
+    async postMapping(body: PfsenseAPI.firewall.nat.onetoone.OneToOneMapping) {
+        return await this.client.post<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping>(PfsenseAPI.firewall.nat.onetoone.post.mapping, body);
     }
-    async patchMapping(
-        body: PfsenseAPI.firewall.nat.onetoone.OneToOneMappingId
-    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping>> {
-        return await this.client.patch(PfsenseAPI.firewall.nat.onetoone.patch.mapping, body);
+    async patchMapping(body: PfsenseAPI.firewall.nat.onetoone.OneToOneMappingId) {
+        return await this.client.patch<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping>(PfsenseAPI.firewall.nat.onetoone.patch.mapping, body);
     }
-    async deleteMapping(id: number, apply: boolean): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping>> {
-        return await this.client.delete(PfsenseAPI.firewall.nat.onetoone.del.mapping, { id, apply });
+    async deleteMapping(id: number, apply: boolean) {
+        return await this.client.delete<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping>(PfsenseAPI.firewall.nat.onetoone.del.mapping, {
+            id,
+            apply,
+        });
     }
-    async getMappings(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping[]>> {
-        return await this.client.get(PfsenseAPI.firewall.nat.onetoone.get.mappings, query);
+    async getMappings(query: PfsenseAPI.queryRequest) {
+        return await this.client.get<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping[]>(PfsenseAPI.firewall.nat.onetoone.get.mappings, query);
     }
-    async putMappings(
-        body: PfsenseAPI.firewall.nat.onetoone.OneToOneMapping[]
-    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping[]>> {
-        return await this.client.put(PfsenseAPI.firewall.nat.onetoone.put.mappings, body);
+    async putMappings(body: PfsenseAPI.firewall.nat.onetoone.OneToOneMapping[]) {
+        return await this.client.put<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping[]>(PfsenseAPI.firewall.nat.onetoone.put.mappings, body);
     }
-    async deleteMappings(
-        query: PfsenseAPI.queryWithoutSortRequest
-    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping[]>> {
-        return await this.client.delete(PfsenseAPI.firewall.nat.onetoone.del.mappings, query);
+    async deleteMappings(query: PfsenseAPI.queryWithoutSortRequest) {
+        return await this.client.delete<PfsenseAPI.firewall.nat.onetoone.OneToOneMapping[]>(PfsenseAPI.firewall.nat.onetoone.del.mappings, query);
     }
 }
 class Outbound {
@@ -104,42 +95,35 @@ class Outbound {
     constructor(client: Client) {
         this.client = client;
     }
-    async getMapping(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping>> {
-        return await this.client.get(PfsenseAPI.firewall.nat.outbound.get.mapping, { id });
+    async getMapping(id: number) {
+        return await this.client.get<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping>(PfsenseAPI.firewall.nat.outbound.get.mapping, { id });
     }
-    async postMapping(
-        body: PfsenseAPI.firewall.nat.outbound.OutboundNATMapping
-    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping>> {
-        return await this.client.post(PfsenseAPI.firewall.nat.outbound.post.mapping, body);
+    async postMapping(body: PfsenseAPI.firewall.nat.outbound.OutboundNATMapping) {
+        return await this.client.post<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping>(PfsenseAPI.firewall.nat.outbound.post.mapping, body);
     }
-    async patchMapping(
-        body: PfsenseAPI.firewall.nat.outbound.OutboundNATMappingId
-    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping>> {
-        return await this.client.patch(PfsenseAPI.firewall.nat.outbound.patch.mapping, body);
+    async patchMapping(body: PfsenseAPI.firewall.nat.outbound.OutboundNATMappingId) {
+        return await this.client.patch<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping>(PfsenseAPI.firewall.nat.outbound.patch.mapping, body);
     }
-    async deleteMapping(id: number, apply: boolean = false): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping>> {
-        return await this.client.delete(PfsenseAPI.firewall.nat.outbound.del.mapping, { id, apply });
+    async deleteMapping(id: number, apply: boolean = false) {
+        return await this.client.delete<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping>(PfsenseAPI.firewall.nat.outbound.del.mapping, {
+            id,
+            apply,
+        });
     }
-    async getMappings(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping[]>> {
-        return await this.client.get(PfsenseAPI.firewall.nat.outbound.get.mappings, query);
+    async getMappings(query: PfsenseAPI.queryRequest) {
+        return await this.client.get<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping[]>(PfsenseAPI.firewall.nat.outbound.get.mappings, query);
     }
-    async putMappings(
-        body: PfsenseAPI.firewall.nat.outbound.OutboundNATMapping[]
-    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping[]>> {
-        return await this.client.put(PfsenseAPI.firewall.nat.outbound.put.mappings, body);
+    async putMappings(body: PfsenseAPI.firewall.nat.outbound.OutboundNATMapping[]) {
+        return await this.client.put<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping[]>(PfsenseAPI.firewall.nat.outbound.put.mappings, body);
     }
-    async deleteMappings(
-        query: PfsenseAPI.queryWithoutSortRequest
-    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping[]>> {
-        return await this.client.delete(PfsenseAPI.firewall.nat.outbound.del.mappings, query);
+    async deleteMappings(query: PfsenseAPI.queryWithoutSortRequest) {
+        return await this.client.delete<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping[]>(PfsenseAPI.firewall.nat.outbound.del.mappings, query);
     }
-    async getMode(): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMapping>> {
-        return await this.client.get(PfsenseAPI.firewall.nat.outbound.get.mode);
+    async getMode() {
+        return await this.client.get<PfsenseAPI.firewall.nat.outbound.OutboundNATMode>(PfsenseAPI.firewall.nat.outbound.get.mode);
     }
-    async patchMode(
-        body: PfsenseAPI.firewall.nat.outbound.OutboundNATMode
-    ): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.outbound.OutboundNATMode>> {
-        return await this.client.patch(PfsenseAPI.firewall.nat.outbound.patch.mode, body);
+    async patchMode(body: PfsenseAPI.firewall.nat.outbound.OutboundNATMode) {
+        return await this.client.patch<PfsenseAPI.firewall.nat.outbound.OutboundNATMode>(PfsenseAPI.firewall.nat.outbound.patch.mode, body);
     }
 }
 class PortForward {
@@ -147,26 +131,26 @@ class PortForward {
     constructor(client: Client) {
         this.client = client;
     }
-    async getPortForward(id: number): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.PortForward>> {
-        return await this.client.get(PfsenseAPI.firewall.nat.get.portForward, { id });
+    async getPortForward(id: number) {
+        return await this.client.get<PfsenseAPI.firewall.nat.PortForward>(PfsenseAPI.firewall.nat.get.portForward, { id });
     }
-    async postPortForward(body: PfsenseAPI.firewall.nat.PortForward): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.PortForward>> {
-        return await this.client.post(PfsenseAPI.firewall.nat.post.portForward, body);
+    async postPortForward(body: PfsenseAPI.firewall.nat.PortForward) {
+        return await this.client.post<PfsenseAPI.firewall.nat.PortForward>(PfsenseAPI.firewall.nat.post.portForward, body);
     }
-    async patchPortForward(body: PfsenseAPI.firewall.nat.PortForwardId): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.PortForward>> {
-        return await this.client.patch(PfsenseAPI.firewall.nat.patch.portForward, body);
+    async patchPortForward(body: PfsenseAPI.firewall.nat.PortForwardId) {
+        return await this.client.patch<PfsenseAPI.firewall.nat.PortForward>(PfsenseAPI.firewall.nat.patch.portForward, body);
     }
-    async deletePortForward(id: number, apply: boolean = false): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.PortForward>> {
-        return await this.client.delete(PfsenseAPI.firewall.nat.del.portForward, { id, apply });
+    async deletePortForward(id: number, apply: boolean = false) {
+        return await this.client.delete<PfsenseAPI.firewall.nat.PortForward>(PfsenseAPI.firewall.nat.del.portForward, { id, apply });
     }
-    async getPortForwards(query: PfsenseAPI.queryRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.PortForward[]>> {
-        return await this.client.get(PfsenseAPI.firewall.nat.get.portForwards, query);
+    async getPortForwards(query: PfsenseAPI.queryRequest) {
+        return await this.client.get<PfsenseAPI.firewall.nat.PortForward[]>(PfsenseAPI.firewall.nat.get.portForwards, query);
     }
-    async putPortForwards(body: PfsenseAPI.firewall.nat.PortForward[]): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.PortForward[]>> {
-        return await this.client.put(PfsenseAPI.firewall.nat.put.portForwards, body);
+    async putPortForwards(body: PfsenseAPI.firewall.nat.PortForward[]) {
+        return await this.client.put<PfsenseAPI.firewall.nat.PortForward[]>(PfsenseAPI.firewall.nat.put.portForwards, body);
     }
-    async deletePortForwards(query: PfsenseAPI.queryWithoutSortRequest): Promise<PfsenseAPI.APIResponse<PfsenseAPI.firewall.nat.PortForward[]>> {
-        return await this.client.delete(PfsenseAPI.firewall.nat.del.portForwards, query);
+    async deletePortForwards(query: PfsenseAPI.queryWithoutSortRequest) {
+        return await this.client.delete<PfsenseAPI.firewall.nat.PortForward[]>(PfsenseAPI.firewall.nat.del.portForwards, query);
     }
 }
 class Nat {
@@ -6979,10 +6963,5 @@ export namespace PfsenseAPI {
         }
     }
 }
-export enum get {}
-export enum post {}
-export enum patch {}
-export enum del {}
-export enum put {}
 
 export default Pfsense;
