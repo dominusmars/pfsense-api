@@ -15,7 +15,7 @@ npm install pfsense-api
 Here is a basic example of how to use the package:
 
 ```javascript
-const Pfsense = require("pfsense-api");
+import Pfsense from "pfsense";
 
 const pf = new Pfsense("https://hosturl", "api_key");
 
