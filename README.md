@@ -22,6 +22,8 @@ const pf = new Pfsense("https://hosturl", "api_key");
 const version = await pf.system.getVersion();
 ```
 
+Implements all endpoints from [pfrest](https://pfrest.org/api-docs/#/)
+
 ## Features
 
 -   Easy interaction with Pfsense API
@@ -34,10 +36,10 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 
 # Disclaimers
 
-    Caution
+Caution
 
-    Just like the RESTAPI, This package is not affiliated or supported by Netgate or the pfSense team. This package is developed and maintained by the community.
+Just like the RESTAPI, This package is not affiliated or supported by Netgate or the pfSense team. This package is developed and maintained by the community.
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the Apache-2.0 License.
